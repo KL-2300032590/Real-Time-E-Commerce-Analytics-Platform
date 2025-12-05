@@ -1,0 +1,21 @@
+package com.example.analytics.repo;
+
+import com.example.analytics.model.EventRecord;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserEventRecordRepository extends JpaRepository<EventRecord, Long> {
+
+    // Spring Data JPA can correctly infer this simple method based on the property name
+    long countByEventType(String eventType);
+
+    // ✅ RECOMMENDED: Use the actual entity name 'EventRecord' in the query
+    @Query("select coalesce(sum(e.price), 0) from EventRecord e where e.eventType = 'PURCHASE'")
+    Double getTotalRevenue();
+
+    // ✅ RECOMMENDED: Use the actual entity name 'EventRecord' in the query
+    @Query("select count(distinct e.userId) from EventRecord e")
+    Long getUniqueUsers();
+}

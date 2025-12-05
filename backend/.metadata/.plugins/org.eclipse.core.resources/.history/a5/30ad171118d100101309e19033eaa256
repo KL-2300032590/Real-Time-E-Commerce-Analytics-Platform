@@ -1,0 +1,35 @@
+package com.example.analytics.repo;
+
+import com.example.analytics.model.EventRecord; // Assume the Entity class is EventRecord
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface UserEventRecordRepository extends JpaRepository<EventRecord, Long> { // 🛠️ FIX 1a: Use actual Entity name here
+
+    long countByEventType(String eventType);
+
+    // 🛠️ FIX 1b: Use FQN in Query
+    @Query("select coalesce(sum(e.price), 0) from com.example.analytics.model.EventRecord e where e.eventType = 'PURCHASE'")
+    Double getTotalRevenue();
+
+    // 🛠️ FIX 1c: Use FQN in Query
+    @Query("select count(distinct e.userId) from com.example.analytics.model.EventRecord e")
+    Long getUniqueUsers();
+
+    // 🛠️ FIX 1d: Use FQN in Query
+    @Query("select coalesce(sum(e.price), 0) " +
+            "from com.example.analytics.model.EventRecord e " +
+            "where e.eventType = 'PURCHASE' and e.timestamp >= :cutoff")
+    Double getRevenueSince(@Param("cutoff") long cutoff);
+
+    // 🛠️ FIX 1e: Use FQN in Query (See Section 2 for the return type fix)
+    @Query("select e.eventType as eventType, count(e) as count " +
+            "from com.example.analytics.model.EventRecord e " +
+            "group by e.eventType")
+    List<EventTypeCountView> getEventCountsByType(); // See Section 2
+}

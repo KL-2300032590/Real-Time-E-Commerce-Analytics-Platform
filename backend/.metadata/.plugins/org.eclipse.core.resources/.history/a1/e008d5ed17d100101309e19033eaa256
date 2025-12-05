@@ -1,0 +1,51 @@
+package com.example.analytics.service;
+
+import com.example.analytics.dto.MetricsSummaryResponse;
+import com.example.analytics.repo.UserEventRecordRepository;
+import com.sun.tools.javac.util.List;
+
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class AnalyticsService {
+
+    private final UserEventRecordRepository repository;
+
+    public AnalyticsService(UserEventRecordRepository repository) {
+        this.repository = repository;
+    }
+
+    public MetricsSummaryResponse getSummaryMetrics() {
+        long totalEvents = repository.count();
+        long totalPurchases = repository.countByEventType("PURCHASE");
+        Double totalRevenue = repository.getTotalRevenue();
+        Long uniqueUsers = repository.getUniqueUsers();
+
+        return new MetricsSummaryResponse(
+                totalEvents,
+                totalPurchases,
+                totalRevenue != null ? totalRevenue : 0.0,
+                uniqueUsers != null ? uniqueUsers : 0L
+        );
+    }
+    
+    public double getRevenueLastHour() {
+        long cutoff = System.currentTimeMillis() - (60 * 60 * 1000); // last 60 mins
+        Double result = repository.getRevenueSince(cutoff);
+        return result != null ? result : 0.0;
+    }
+    
+    public Map<String, Long> getEventTypeBreakdown() {
+        List<EventTypeCountView> rows = repository.getEventCountsByType();
+        Map<String, Long> result = new HashMap<>();
+
+        for (EventTypeCountView row : rows) {
+            result.put(row.getEventType(), row.getCount());
+        }
+
+        return result;
+    }
+
+}

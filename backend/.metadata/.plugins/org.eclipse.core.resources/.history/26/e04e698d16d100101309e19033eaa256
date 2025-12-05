@@ -1,0 +1,20 @@
+package com.example.analytics.repo;
+
+import com.example.analytics.model.EventRecord;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserEventRecordRepository extends JpaRepository<EventRecord, Long> {
+
+    long countByEventType(String eventType);
+
+    // 🛠️ FIX: Use the fully qualified class name in the JPQL query
+    @Query("select coalesce(sum(e.price), 0) from com.example.analytics.model.EventRecord e where e.eventType = 'PURCHASE'")
+    Double getTotalRevenue();
+
+    // 🛠️ FIX: Use the fully qualified class name in the JPQL query
+    @Query("select count(distinct e.userId) from com.example.analytics.model.EventRecord e")
+    Long getUniqueUsers();
+}

@@ -1,0 +1,38 @@
+package com.example.analytics.model;
+
+
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+// Optional: If you want to use Lombok for getters/setters/constructors
+import lombok.Data; 
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Entity
+@Table(name = "user_event_records")
+public class EventRecord {
+
+    // 1. Primary Key
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    // 2. Data fields corresponding to your DTO
+    private String eventType;
+    private String userId;
+    private String sessionId;
+    private String productId;
+    
+    // Use String for currency and double/BigDecimal for price
+    private Double price;
+    private String currency;
+    
+    // Store as a standard database timestamp type (Long epoch millis is fine)
+    private Long timestamp;
+
+}

@@ -1,0 +1,110 @@
+package com.example.analytics.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public class UserEvent {
+
+    @NotBlank
+    private String eventType;   // VIEW, CLICK, ADD_TO_CART, PURCHASE
+
+    @NotBlank
+    private String userId;
+
+    @NotBlank
+    private String sessionId;
+
+    @NotBlank
+    private String productId;
+
+    // Only required for PURCHASE, but we'll keep it nullable and validate later if needed
+    private Double price;
+
+    private String currency;    // e.g. INR, USD
+
+    @NotNull
+    private Long timestamp;     // epoch millis
+
+    public UserEvent() {
+    }
+
+    public UserEvent(String eventType, String userId, String sessionId,
+                     String productId, Double price, String currency, Long timestamp) {
+        this.eventType = eventType;
+        this.userId = userId;
+        this.sessionId = sessionId;
+        this.productId = productId;
+        this.price = price;
+        this.currency = currency;
+        this.timestamp = timestamp;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+    @Override
+    public String toString() {
+        return "UserEvent{" +
+                "eventType='" + eventType + '\'' +
+                ", userId='" + userId + '\'' +
+                ", sessionId='" + sessionId + '\'' +
+                ", productId='" + productId + '\'' +
+                ", price=" + price +
+                ", currency='" + currency + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
+
+}

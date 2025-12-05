@@ -1,0 +1,5 @@
+package com.example.analytics.dto;
+
+public class MetricsSummaryResponse {
+
+}
