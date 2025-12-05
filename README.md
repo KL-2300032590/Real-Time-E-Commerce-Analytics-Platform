@@ -3,8 +3,7 @@
 
 Click to watch the demo:
 
-https://github.com/KL-2300032590/Real-Time-E-Commerce-Analytics-Platform
-/blob/main/assets/demo.mov
+https://github.com/KL-2300032590/Real-Time-E-Commerce-Analytics-Platform/blob/main/assets/demo.mov
 
 
 
